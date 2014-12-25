@@ -73,8 +73,6 @@ public class Main extends Application {
     root.getChildren().add(createAndRegisterNumButton("3", 110, 330));
     
     
-    
-    
     Scene mainScene = new Scene(root, width, height);
     mainScene.setCursor(Cursor.NONE);
      
@@ -101,7 +99,6 @@ public class Main extends Application {
     roundButton.setLayoutX(x);
     roundButton.setLayoutY(y);
     roundButton.setFocusTraversable(false);
-//    roundButton.setVisible(false);
     roundButton.setOnAction(event -> handler.processChar(caption.charAt(0)));
     
     handler.registerButton(roundButton);
