@@ -1,4 +1,4 @@
 echo ----------------------------------------------------------------------
-sudo java -cp mantarget:lib/pi4j-core.jar mk.hsilomedus.pn532.Main
+sudo java -cp mantarget:lib/pi4j-core.jar mk.hsilomedus.doornfx.Main
 echo ----------------------------------------------------------------------
 
