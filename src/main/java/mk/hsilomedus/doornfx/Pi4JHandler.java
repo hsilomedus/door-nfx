@@ -10,7 +10,7 @@ import mk.hsilomedus.pn532.PN532I2C;
  * stipulated in the agreement/contract under which the program(s) have been supplied.
  */
 
-public class Pi4JHandler {
+public class Pi4JHandler implements Runnable {
 
   static final byte PN532_MIFARE_ISO14443A = 0x00;
 
@@ -20,7 +20,7 @@ public class Pi4JHandler {
     this.handler = handler;
   }
 
-  void init() {
+  public void run() {
     
     try {
       IPN532Interface pn532Interface = new PN532I2C();
@@ -74,6 +74,10 @@ public class Pi4JHandler {
     } catch (InterruptedException intException) {
       //fall gracefully
       System.out.println("Thread interrupted, closing PN handler.");
+    } catch (Throwable exc) {
+      System.out.println("No RasPi detected or error occured");
+//      statusBox.setStyle("-fx-font-size: 30pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: red;");
+      exc.printStackTrace();
     }
   }
 

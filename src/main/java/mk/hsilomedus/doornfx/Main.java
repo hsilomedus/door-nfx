@@ -47,13 +47,8 @@ public class Main extends Application {
     handler = new Handler(statusBox);
 
     Pi4JHandler pi4jHandler = new Pi4JHandler(handler); 
-    try {
-      pi4jHandler.init();
-    } catch (Throwable exc) {
-      System.out.println("No RasPi detected or error occured");
-      statusBox.setStyle("-fx-font-size: 30pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: red;");
-      exc.printStackTrace();
-    }
+    Thread thrpij4 = new Thread(pi4jHandler);
+    thrpij4.start();
     
     
     root.getChildren().add(createAndRegisterNumButton("<", 500, 30));
