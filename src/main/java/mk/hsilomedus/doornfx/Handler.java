@@ -125,9 +125,11 @@ public class Handler implements IHandler {
         System.out.println(response.toString());
         
       } catch (MalformedURLException e) {
-        // TODO Auto-generated catch block
+        System.out.println("Malformed URL Exception " + e);
+        e.printStackTrace();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
+        System.out.println("IO Exception " + e);
+        e.printStackTrace();
       }
       
       
