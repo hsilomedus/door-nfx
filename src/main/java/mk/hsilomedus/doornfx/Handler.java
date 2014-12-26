@@ -9,6 +9,12 @@
  */
 package mk.hsilomedus.doornfx;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,21 +84,66 @@ public class Handler implements IHandler {
     }
   }
   
+  private boolean remoteAcessService = true;
   private boolean shouldPass = true;
   private void checkCredentials() {
-    //should do a remote call here
-    //for now, accept the first, ignore the latter.
-    Platform.runLater(()->{
+    if (remoteAcessService) {
+      String completeString = currentPassiveId + "_" + passCode;
+      String hashed = "" + completeString.hashCode();
+      String URItoCall = "http://192.168.1.110:55506/DoorNFXWeb/web/access/getForKey?key=" + hashed;
+      
+      URL u;
       try {
-        Thread.sleep(200);
-      } catch (Exception e) { }
-      if (shouldPass) {
-        switchToState(SUCCESS);
-      } else {
-        switchToState(FAIL);
+        u = new URL(URItoCall);
+        HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+        
+        connection.setRequestMethod("GET");
+        
+        int responseCode = connection.getResponseCode();
+        
+        System.out.println("Response Code : " + responseCode);
+     
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+     
+        while ((inputLine = in.readLine()) != null) {
+          response.append(inputLine);
+        }
+        in.close();
+        
+        String outResponse = response.toString();
+        
+        if (responseCode == 200 && "OK".equals(outResponse)) {
+          switchToState(SUCCESS);
+        } else {
+          switchToState(FAIL);
+        }
+     
+        //print result
+        System.out.println(response.toString());
+        
+      } catch (MalformedURLException e) {
+        // TODO Auto-generated catch block
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
       }
-      shouldPass = !shouldPass;
-    });
+      
+      
+    } else {
+      Platform.runLater(()->{
+        try {
+          Thread.sleep(200);
+        } catch (Exception e) { }
+        if (shouldPass) {
+          switchToState(SUCCESS);
+        } else {
+          switchToState(FAIL);
+        }
+        shouldPass = !shouldPass;
+      });
+    }
   }
   
   private void switchToState(int newState) {
