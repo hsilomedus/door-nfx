@@ -23,8 +23,8 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
        
-    int width = 480;
-    int height = 640;
+    int width = 240;
+    int height = 320;
     
     primaryStage.setTitle("DoorNFX");
            
@@ -34,13 +34,13 @@ public class Main extends Application {
     root.setPrefHeight(height);
     
     Label statusBox = new Label();
-    statusBox.setPrefWidth(420);
-    statusBox.setPrefHeight(70);
+    statusBox.setPrefWidth(210);
+    statusBox.setPrefHeight(35);
     statusBox.setAlignment(Pos.CENTER);
     statusBox.setTextFill(Color.web("#bbbbff"));
-    statusBox.setStyle("-fx-font-size: 30pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: blue;");
-    statusBox.setLayoutY(10);
-    statusBox.setLayoutX(30);
+    statusBox.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: blue;");
+    statusBox.setLayoutY(5);
+    statusBox.setLayoutX(15);
     statusBox.setText("Tag in");
     root.getChildren().add(statusBox);
     
@@ -51,21 +51,21 @@ public class Main extends Application {
     thrpij4.start();
     
     
-    root.getChildren().add(createAndRegisterNumButton("<", 500, 30));
-    root.getChildren().add(createAndRegisterNumButton("0", 500, 180));
-    root.getChildren().add(createAndRegisterNumButton("!", 500, 330));
+    root.getChildren().add(createAndRegisterNumButton("<", 250, 15));
+    root.getChildren().add(createAndRegisterNumButton("0", 250, 90));
+    root.getChildren().add(createAndRegisterNumButton("!", 250, 165));
     
-    root.getChildren().add(createAndRegisterNumButton("7", 370, 30));
-    root.getChildren().add(createAndRegisterNumButton("8", 370, 180));
-    root.getChildren().add(createAndRegisterNumButton("9", 370, 330));
+    root.getChildren().add(createAndRegisterNumButton("7", 185, 15));
+    root.getChildren().add(createAndRegisterNumButton("8", 185, 90));
+    root.getChildren().add(createAndRegisterNumButton("9", 185, 165));
     
-    root.getChildren().add(createAndRegisterNumButton("4", 240, 30));
-    root.getChildren().add(createAndRegisterNumButton("5", 240, 180));
-    root.getChildren().add(createAndRegisterNumButton("6", 240, 330));
+    root.getChildren().add(createAndRegisterNumButton("4", 120, 15));
+    root.getChildren().add(createAndRegisterNumButton("5", 120, 90));
+    root.getChildren().add(createAndRegisterNumButton("6", 120, 165));
     
-    root.getChildren().add(createAndRegisterNumButton("1", 110, 30));
-    root.getChildren().add(createAndRegisterNumButton("2", 110, 180));
-    root.getChildren().add(createAndRegisterNumButton("3", 110, 330));
+    root.getChildren().add(createAndRegisterNumButton("1", 55, 15));
+    root.getChildren().add(createAndRegisterNumButton("2", 55, 90));
+    root.getChildren().add(createAndRegisterNumButton("3", 55, 165));
     
     
     Scene mainScene = new Scene(root, width, height);
@@ -83,11 +83,11 @@ public class Main extends Application {
 
     roundButton.setStyle(
             "-fx-background-radius: 5em; " +
-            "-fx-min-width: 120px; " +
-            "-fx-min-height: 120px; " +
-            "-fx-max-width: 120px; " +
-            "-fx-max-height: 120px; " +
-            "-fx-font-size: 36pt; -fx-font-weight:bold; "
+            "-fx-min-width: 60px; " +
+            "-fx-min-height: 60px; " +
+            "-fx-max-width: 60px; " +
+            "-fx-max-height: 60px; " +
+            "-fx-font-size: 18pt; -fx-font-weight:bold; "
     );
     
     roundButton.setText(caption);
