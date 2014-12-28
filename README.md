@@ -34,10 +34,10 @@ In /boot/cmdline.txt: removed fbcon map and fbcon font
 In /boot/config.txt:
 ```
 disable_overscan=1
-framebuffer_width=480
-framebuffer_height=640
+framebuffer_width=240
+framebuffer_height=320
  #set specific CVT mode
-hdmi_cvt 480 640 60 1 0 0 0
+hdmi_cvt 240 320 60 1 0 0 0
  #set CVT as default
 hdmi_group=2
 hdmi_mode=87
