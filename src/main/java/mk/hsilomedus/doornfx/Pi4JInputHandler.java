@@ -10,13 +10,13 @@ import mk.hsilomedus.pn532.PN532I2C;
  * stipulated in the agreement/contract under which the program(s) have been supplied.
  */
 
-public class Pi4JHandler implements Runnable {
+public class Pi4JInputHandler implements Runnable {
 
   static final byte PN532_MIFARE_ISO14443A = 0x00;
 
   private IHandler handler;
 
-  public Pi4JHandler(IHandler handler) {
+  public Pi4JInputHandler(IHandler handler) {
     this.handler = handler;
   }
 

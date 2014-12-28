@@ -38,15 +38,22 @@ public class Main extends Application {
     statusBox.setPrefHeight(35);
     statusBox.setAlignment(Pos.CENTER);
     statusBox.setTextFill(Color.web("#bbbbff"));
-    statusBox.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: blue;");
     statusBox.setLayoutY(5);
     statusBox.setLayoutX(15);
     statusBox.setText("Tag in");
     root.getChildren().add(statusBox);
     
-    handler = new Handler(statusBox);
+    Pi4JOutputHandler pi4jOutputHandler = new Pi4JOutputHandler();
+    try {
+      pi4jOutputHandler.init();
+    } catch (Throwable exc) {
+      System.out.println("No RasPi detected or error occured");
+      exc.printStackTrace();
+    }
+    
+    handler = new Handler(statusBox, pi4jOutputHandler);
 
-    Pi4JHandler pi4jHandler = new Pi4JHandler(handler); 
+    Pi4JInputHandler pi4jHandler = new Pi4JInputHandler(handler); 
     Thread thrpij4 = new Thread(pi4jHandler);
     thrpij4.start();
     

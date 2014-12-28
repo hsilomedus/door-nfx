@@ -39,9 +39,11 @@ public class Handler implements IHandler {
   private String passCode;
   
   private Label statusLabel;
+  private Pi4JOutputHandler pi4jOutputHandler;
   
-  public Handler(Label statusLabel) {
+  public Handler(Label statusLabel, Pi4JOutputHandler pi4jOutputHandler) {
     this.statusLabel = statusLabel;
+    this.pi4jOutputHandler = pi4jOutputHandler;
   }
   
   @Override
@@ -84,12 +86,13 @@ public class Handler implements IHandler {
     }
   }
   
-  private boolean remoteAcessService = true;
+  private boolean remoteAcessService = false;
   private boolean shouldPass = true;
   private void checkCredentials() {
     if (remoteAcessService) {
       String completeString = currentPassiveId + "_" + passCode;
       String hashed = "" + completeString.hashCode();
+      System.out.println("Asked creds for hash: " + hashed);
       String URItoCall = "http://192.168.1.110:55506/DoorNFXWeb/web/access/getForKey?key=" + hashed;
       
       URL u;
@@ -153,22 +156,30 @@ public class Handler implements IHandler {
       case WAITING_FOR_NFC:
         buttons.stream().forEach(button -> button.setVisible(false));
         statusLabel.setText("Tag in");
+        statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: blue;");
         passCode = "";
+        pi4jOutputHandler.closeLock();
         break;
       case WAITING_FOR_CODE:
         buttons.stream().forEach(button -> button.setVisible(true));
         statusLabel.setText("Enter code");
+        statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: blue;");
         passCode = "";
+        pi4jOutputHandler.closeLock();
         break;
       case INVALIDATING:
         buttons.stream().forEach(button -> button.setVisible(false));
         statusLabel.setText("Wait...");
+        statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: yellow;");
+        pi4jOutputHandler.closeLock();
         break;
       case FAIL:
         statusLabel.setText("Forbidden!");
+        statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: red;");
+        pi4jOutputHandler.closeLock();
         Platform.runLater(() -> {
           try {
-            Thread.sleep(2000);
+            Thread.sleep(4000);
           } catch (Exception e) {
             
           }
@@ -177,9 +188,11 @@ public class Handler implements IHandler {
         break;
       case SUCCESS:
         statusLabel.setText("Granted!");
+        statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: green;");
+        pi4jOutputHandler.openLock();
         Platform.runLater(() -> {
           try {
-            Thread.sleep(2000);
+            Thread.sleep(4000);
           } catch (Exception e) {
             
           }
@@ -187,6 +200,8 @@ public class Handler implements IHandler {
         });
         break;
       default:
+        pi4jOutputHandler.openLock();
+        break;
     }
     
     state = newState;
