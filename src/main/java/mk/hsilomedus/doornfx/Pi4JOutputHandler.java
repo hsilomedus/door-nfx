@@ -17,11 +17,13 @@ public class Pi4JOutputHandler {
   private GpioController gpio;
   
   private GpioPinDigitalOutput doorPin;
+  private GpioPinDigitalOutput beepPin;
   
   public void init() {
  // create gpio controller
     gpio = GpioFactory.getInstance();
-    doorPin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, PinState.LOW);
+    doorPin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, PinState.LOW);
+    beepPin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, PinState.LOW);
     
   }
   
@@ -35,6 +37,42 @@ public class Pi4JOutputHandler {
   public void closeLock() {
     if (doorPin != null) {
       doorPin.low();
+    }
+  }
+  
+  public void beepNFC() {
+    beep(500);
+  }
+  
+  public void beepButton() {
+    beep(200);
+  }
+  
+  public void beepOK() {
+    beep(1000);
+  }
+  
+  public void beepNotOK() {
+    try {
+      for (int i = 0; i < 5; i++) {
+        beep(200);
+        Thread.sleep(100);
+      }
+    } catch (InterruptedException exc) {
+      // Do nothing
+    } finally {
+      beepPin.low();
+    }
+  }
+  
+  private void beep(int millis) {
+    beepPin.high();
+    try {
+      Thread.sleep(millis);
+    } catch (InterruptedException exc) {
+      //Do nothing
+    } finally {
+      beepPin.low();
     }
   }
 

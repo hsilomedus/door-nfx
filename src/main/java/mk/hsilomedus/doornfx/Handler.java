@@ -49,7 +49,7 @@ public class Handler implements IHandler {
   }
   
   @Override
-  public void processChar(char tickedChar) {
+  public synchronized void processChar(char tickedChar) {
     if (state == WAITING_FOR_CODE) {
       if (passCode.length() == 0) {
         statusLabel.setText("");
@@ -57,12 +57,14 @@ public class Handler implements IHandler {
       
       if (tickedChar == '<' && passCode.length() > 0) {
         passCode = passCode.substring(0, passCode.length()-1);
+        pi4jOutputHandler.beepButton();
       } else if (tickedChar == '!') {
         switchToState(INVALIDATING);
         checkCredentials();
       } else {
         passCode += tickedChar;
         statusLabel.setText(statusLabel.getText() + "*");
+        pi4jOutputHandler.beepButton();
       }
     }
   }
@@ -143,7 +145,7 @@ public class Handler implements IHandler {
     }
   }
   
-  private void switchToState(int newState) {
+  private synchronized void switchToState(int newState) {
     switch (newState) {
       case WAITING_FOR_NFC:
         buttons.stream().forEach(button -> button.setVisible(false));
@@ -153,11 +155,12 @@ public class Handler implements IHandler {
         pi4jOutputHandler.closeLock();
         break;
       case WAITING_FOR_CODE:
+        pi4jOutputHandler.closeLock();
+        pi4jOutputHandler.beepNFC();
         buttons.stream().forEach(button -> button.setVisible(true));
         statusLabel.setText("Enter code");
         statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: blue;");
         passCode = "";
-        pi4jOutputHandler.closeLock();
         break;
       case INVALIDATING:
         buttons.stream().forEach(button -> button.setVisible(false));
@@ -169,9 +172,10 @@ public class Handler implements IHandler {
         statusLabel.setText("Forbidden!");
         statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: red;");
         pi4jOutputHandler.closeLock();
+        pi4jOutputHandler.beepNotOK();
         Platform.runLater(() -> {
           try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
           } catch (Exception e) {
             
           }
@@ -182,9 +186,10 @@ public class Handler implements IHandler {
         statusLabel.setText("Granted!");
         statusLabel.setStyle("-fx-font-size: 15pt; -fx-font-weight:bold; -fx-border-color:red; -fx-background-color: green;");
         pi4jOutputHandler.openLock();
+        pi4jOutputHandler.beepOK();
         Platform.runLater(() -> {
           try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
           } catch (Exception e) {
             
           }
