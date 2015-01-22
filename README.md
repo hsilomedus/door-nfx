@@ -1,6 +1,7 @@
 door-nfx
 ========
 Door lock node JavaFX8 software running on RaspberryPi with a PN532 NFC Module
+![Device GUI](https://raw.githubusercontent.com/hsilomedus/door-nfx/master/gui.png "Device GUI")
 
 ========
 Hardware
@@ -8,6 +9,8 @@ Hardware
 Adafruit PiTFT: https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/overview
 
 Processed ITEAD PN532 NFC Module: http://hsilomedus.me/index.php/itead-pn532-nfc-module-and-raspberrypi-via-i2c-and-java/
+![Device](https://raw.githubusercontent.com/hsilomedus/door-nfx/master/device.png "Device")
+
 OS Image
 --------
 Used OS image: http://adafruit-download.s3.amazonaws.com/PiTFT28R_raspbian140909_2014_09_18.zip
